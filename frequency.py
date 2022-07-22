@@ -20,7 +20,8 @@ def data_frequency_in_dico(folder, file_to_read):
                 dico[address].append(int(a.replace(tzinfo=timezone.utc).timestamp()))
     return(dico)
 
-def calcul_frequency(liste):
+def calcul_frequency(folder, file_to_read, mac_address):
+    liste = data_frequency_in_dico(folder, file_to_read)[mac_address]
     new_list = list()
     for i in range(1,len(liste)-1,1):
         a = int(liste[i+1])-int(liste[i])
@@ -43,17 +44,18 @@ def data_rssi_in_dico(folder, file_to_read):
     return(dico)
 
 
-def rssi_analyse(folder, file_to_read, object):
+def rssi_analyse(folder, file_to_read, mac_address):
     dico = data_rssi_in_dico(folder, file_to_read)
-    d = dico[object][0]
-    e = dico[object][-1]
+    d = dico[mac_address][0]
+    e = dico[mac_address][-1]
+    print(dico[mac_address])
     if d > e:
         return("The object have moved away")
     if e > d:
         return("The object have moved closer")
     return None 
 
-
+"""
 dico = data_rssi_in_dico("./data", "input.txt")
 print(dico["5e:6e:ad:bc:8c:57"])
 print(calcul_frequency(dico["d0:23:c7:ba:60:c4"]))
@@ -63,3 +65,7 @@ print(calcul_frequency(dico["51:3a:78:ae:b2:10"]))
 print(calcul_frequency(dico["3b:18:53:a9:f6:c3"]))
 print(calcul_frequency(dico["5e:6e:ad:bc:8c:57"]))
 print(rssi_analyse("./data", "output.txt","5e:6e:ad:bc:8c:57" ))
+"""
+print(calcul_frequency("./data", "input.txt","d0:23:c7:ba:60:c4"))
+print(rssi_analyse("./data", "input.txt","d0:23:c7:ba:60:c4"))
+print(data_rssi_in_dico("./data", "input.txt"))
